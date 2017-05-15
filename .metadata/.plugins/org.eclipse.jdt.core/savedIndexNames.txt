@@ -1,0 +1,27 @@
+INDEX VERSION 1.130+F:\Users\Bernd\Onedrive\Schule\Jahrgang_4\WorkspaceEE\.metadata\.plugins\org.eclipse.jdt.core
+896908111.index
+3580853713.index
+126156730.index
+2203732274.index
+3644943548.index
+2713206377.index
+2127142893.index
+1201690613.index
+566879679.index
+3417262866.index
+4071531812.index
+3430680400.index
+2016526156.index
+341392747.index
+1605658419.index
+471668517.index
+422478299.index
+1007838611.index
+2403622464.index
+1268729697.index
+2962839030.index
+1115401707.index
+3002170740.index
+2651901188.index
+448495106.index
+2804233569.index

@@ -1,0 +1,34 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PrimeClient extends Thread{
+	private long lastPrime;
+	private long primeFound;
+	private long runTime;
+	public PrimeClient(long lastPrime, long primeFound, long runTime){
+		this.lastPrime = lastPrime;
+		this.primeFound = primeFound;
+		this.runTime = runTime;
+	}
+	
+	public void run(){
+		do{
+			this.lastPrime++;
+		while(!isPrime(this.lastPrime));
+	}
+	
+	private boolean isPrime(long n) {
+	    // fast even test.
+	    if(n > 2 && (n & 1) == 0)
+	       return false;
+	    // only odd factors need to be tested up to n^0.5
+	    for(int i = 3; i * i <= n; i += 2)
+	        if (n % i == 0) 
+	            return false;
+	    return true;
+	}
+}
