@@ -19,12 +19,6 @@ public class PrimeServlet extends HttpServlet{
 		} else {
 			this.pc = new PrimeClient(1000001l);
 			this.pc.start();
-			try {
-				this.pc.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			out.println(getHTML());
 		}
 		out.close();
@@ -34,7 +28,7 @@ public class PrimeServlet extends HttpServlet{
 		String output = "<html>"
 				+ "<body>"
 				+ "<h1>"
-				+ this.pc.nextPrime()
+				+ this.pc.getPrime()
 				+"</h1>"
 				+"Zeit: " + this.pc.getTime()
 				+ "</body>"

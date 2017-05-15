@@ -1,32 +1,37 @@
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class PrimeClient extends Thread{
-	private long lastPrime;
+	private long currPrime;
+	private long outPrime;
 	private long startTime;
-	private long runTime;
+	private boolean keepRunning;
+	
 	
 	public PrimeClient(long lastPrime){
 		super();
-		this.lastPrime = lastPrime;
-	}
-	
-	public long nextPrime(){
-		do{
-			this.lastPrime++;
-		} while(!isPrime(this.lastPrime));
-		return this.lastPrime;
-	}
-	
-	public void run(){
+		this.currPrime = lastPrime;
+		this.outPrime = lastPrime;
+		this.keepRunning = true;
 		this.startTime = System.currentTimeMillis();
 	}
-
+	
+	
+	public void stopExecuting() {
+		keepRunning = false;
+    }
+	
+	public void run(){
+		while(keepRunning){
+			this.currPrime++;
+			if(isPrime(this.currPrime)) this.outPrime = this.currPrime;
+		}
+	}
+	
+	/**
+	 * Src: Filip Scopulovic
+	 * @return
+	 */
 	public String getTime(){
 		long time = System.currentTimeMillis() - this.startTime;
 		if(TimeUnit.MILLISECONDS.toSeconds(time) < 180){
@@ -36,6 +41,10 @@ public class PrimeClient extends Thread{
 		} else {
 			return TimeUnit.MILLISECONDS.toHours(time) + " stunden";
 		}
+	}
+	
+	public long getPrime(){
+		return this.outPrime;
 	}
 	  
 	private boolean isPrime(long n) {
