@@ -1,0 +1,89 @@
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+
+public class PrimeClient extends Thread{
+	private long currPrime;
+	private long outPrime;
+	private long startTime;
+	private boolean keepRunning;
+	private Date outDate;
+	private long timeFound;
+	
+	public PrimeClient(long lastPrime){
+		super();
+		this.currPrime = lastPrime;
+		this.outPrime = lastPrime;
+		this.keepRunning = true;
+		this.startTime = System.currentTimeMillis();
+		this.outDate  = new Date();
+		this.timeFound = System.currentTimeMillis();
+	}
+	
+	
+	public void stopExecuting() {
+		keepRunning = false;
+    }
+	
+	public void run(){
+		while(keepRunning){
+			this.currPrime++;
+			if(isPrime(this.currPrime)){
+				this.outPrime = this.currPrime;
+				this.outDate = new Date();
+				this.timeFound = System.currentTimeMillis();
+			}
+		}
+	}
+	
+	public String getSearchTime(){
+		long time = System.currentTimeMillis() - this.timeFound;
+		if(TimeUnit.MILLISECONDS.toSeconds(time) > 1){
+			if(TimeUnit.MILLISECONDS.toSeconds(time) < 180){
+				return TimeUnit.MILLISECONDS.toSeconds(time) + " sekunden";
+			} else if (TimeUnit.MILLISECONDS.toMinutes(time) < 90){
+				return TimeUnit.MILLISECONDS.toMinutes(time) + " minuten";
+			} else {
+				return TimeUnit.MILLISECONDS.toHours(time) + " stunden";
+			}
+		} else{
+			return time + " millisekunden";
+		}
+	}
+	
+	/**
+	 * Src: Filip Scopulovic
+	 * @return
+	 */
+	public String getTime(){
+		long time = System.currentTimeMillis() - this.startTime;	
+		if(TimeUnit.MILLISECONDS.toSeconds(time) < 180){
+			return TimeUnit.MILLISECONDS.toSeconds(time) + " sekunden";
+		} else if (TimeUnit.MILLISECONDS.toMinutes(time) < 90){
+			return TimeUnit.MILLISECONDS.toMinutes(time) + " minuten";
+		} else {
+			return TimeUnit.MILLISECONDS.toHours(time) + " stunden";
+		}
+	}
+	
+	public Date getDate(){
+		return this.outDate;
+	}
+	
+	public long getPrime(){
+		return this.outPrime;
+	}
+	  
+	private boolean isPrime(long n) 
+	{
+	    //check if n is a multiple of 2
+	    if ((n % 2) == 0) return false;
+	    //if not, then just check the odds
+	    for (long i = 3; (i * i) <= n; i += 2) 
+	    {
+	        if ((n % i) == 0)
+	            return false;
+	    }
+	    return true;
+	}
+}

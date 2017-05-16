@@ -1,0 +1,87 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PrimeServlet extends HttpServlet{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private PrimeClient pc;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		System.out.println("Seite wird neu geladen!");
+		PrintWriter out = response.getWriter();
+		if(this.pc != null){
+			out.println(getHTML());	
+		} else {
+			this.pc = new PrimeClient(1000000000001l);
+			this.pc.start();
+			out.println(getHTML());
+		}
+		out.close();
+	}
+	
+	private String getHTML() throws IOException{
+		String output = "<html>"
+				+ "<head>"
+				+ "<style>"
+				+ getCSS()
+				+ "</style>"
+				+ "</head>"
+				+ "<body>"
+				+ "<div class='normal'>"
+				+ "Die Primzahl"
+				+ "</div>"
+				+ "<div class='prime'>"
+				+ this.pc.getPrime()
+				+ "</div>"
+				+ "<div class='normal'>"
+				+ " wurde gefunden um " 
+				+ "</div>"
+				+ "<div class='timestamp'>"
+				+ new SimpleDateFormat("HH:mm:ss").format(this.pc.getDate())
+				+ "</div>"
+				+ "<div class='normal'>"
+				+" </br>Das Servlet läuft schon seit "
+				+ "</div>"
+				+ "<div class='timepassed'>" 
+				+ this.pc.getTime()
+				+ "</div>"
+				+ "<div class='normal'>"
+				+ "Suche nach neuer Primzahl läuft seit "
+				+ "</div>"
+				+ "<div class='timepassed2'>"
+				+ this.pc.getSearchTime()
+				+ "</div>"
+				+ "</body>"
+				+ "</html>";
+		return output;
+	}
+	
+	private String getCSS() throws IOException{
+		return readFile("style.css");
+	}
+
+private String readFile(String pathname) throws IOException {
+
+    File file = new File(pathname);
+    StringBuilder fileContents = new StringBuilder((int)file.length());
+    Scanner scanner = new Scanner(file);
+    String lineSeparator = System.getProperty("line.separator");
+
+    try {
+        while(scanner.hasNextLine()) {
+            fileContents.append(scanner.nextLine() + lineSeparator);
+        }
+        return fileContents.toString();
+    } finally {
+        scanner.close();
+    }
+}
+}

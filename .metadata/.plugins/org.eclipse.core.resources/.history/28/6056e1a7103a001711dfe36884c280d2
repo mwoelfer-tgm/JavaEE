@@ -1,0 +1,93 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PrimeServlet extends HttpServlet{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private PrimeClient pc;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		System.out.println("Seite wird neu geladen!");
+		PrintWriter out = response.getWriter();
+		if(this.pc != null){
+			out.println(getHTML());	
+		} else {
+			this.pc = new PrimeClient(1000001l);
+			this.pc.start();
+			out.println(getHTML());
+		}
+		out.close();
+	}
+	
+	private String getHTML(){
+		String output = "<html>"
+				+ "<body>"
+				+ "<div class='prime'>"
+				+ this.pc.getPrime()
+				+ "</div>"
+				+ " wurde gefunden um " + new SimpleDateFormat("HH:mm:ss").format(this.pc.getDate())
+				+"</h1>"
+				+"Läuft schon seit " + this.pc.getTime()
+				+ "</body>"
+				+ "</html>";
+		return output;
+	}
+	
+	private String getCSS(){
+		return ""
+				+ "
+
+@font-face {
+	font-family: 'digi';
+	src: url('http://cssdeck.com/uploads/resources/fonts/digii/DS-DIGII.TTF');
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	width: 100%; height: 100%;
+}
+
+body {
+	font-family: 'digi';
+	font-size: 76%;
+	background: #B9B7B1;
+	background-image: radial-gradient(
+		center 0,
+		white,
+		#B9B7B1
+	);
+}
+
+div {
+	width: 250px; height: 100px;
+	background: white;
+	font-size: 4em;
+	color: #707070;
+	
+	/* Centering everything */
+	position: absolute;
+	left: 50%; top: 50%;
+	margin-left: -125px; margin-top: -50px;
+	
+	text-align: center;
+	line-height: 100px;
+	
+	border-top: 5px solid #E54B6B;
+	background-image: linear-gradient(#f0f0f0, white);
+}
+
+
+"
+	}
+}
